@@ -38,8 +38,23 @@ var transit = ProtoBuf.protoFromFile('gtfs-realtime.proto').build('transit_realt
 
 
 // get trip progress and updates
-http.get('change me', function(res) {
+http.get('http://developer.mbta.com/lib/GTRTFS/Alerts/TripUpdates.pb', function(res) {
+     var data = [];
+    res.on("data", function(chunk) { data.push(chunk); });
+    res.on("end", function() {
+        data = Buffer.concat(data);
 
+        // create a FeedMessage object by decooding the data with the protobuf object
+        var msg = transit.FeedMessage.decode(data);
+
+            //vehicles = _.pluck(msg.entity, 'vehicle');
+
+
+
+
+        console.log(JSON.stringify(msg, null, 2));
+        debugger;
+    });    
 
 });
 
@@ -56,7 +71,7 @@ http.get('http://developer.mbta.com/lib/GTRTFS/Alerts/VehiclePositions.pb', func
 
 
 
-        console.log(JSON.stringify(vehicles, null, 2));
+        //console.log(JSON.stringify(vehicles, null, 2));
         debugger;
     });
 });
