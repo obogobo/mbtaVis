@@ -34,11 +34,17 @@ io.on('connection', function (socket) {
 
 
 // create a protobuf decoder // your protobuf binary feed URL
-var transit = ProtoBuf.protoFromFile('gtfs-realtime.proto').build('transit_realtime'),
-    feedUrl = "http://developer.mbta.com/lib/GTRTFS/Alerts/VehiclePositions.pb";
+var transit = ProtoBuf.protoFromFile('gtfs-realtime.proto').build('transit_realtime');
 
-// HTTP GET the binary feed
-http.get(feedUrl, function(res) {
+
+// get trip progress and updates
+http.get('change me', function(res) {
+
+
+});
+
+// get vehicle positions
+http.get('http://developer.mbta.com/lib/GTRTFS/Alerts/VehiclePositions.pb', function(res) {
     var data = [];
     res.on("data", function(chunk) { data.push(chunk); });
     res.on("end", function() {
